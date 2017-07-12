@@ -9,11 +9,13 @@ angular.module("routerApp")
             this.password = '';
 
 
-            this.auth = function auth() {
-                console.log(this.email);
+            this.auth = function() {
+                if (this.email == 'admin') {
+                    console.log(this.email);
+                }
             };
         },
 
-        templateUrl : '/login/login.view.html',
+        templateUrl : '/login/login.view.html'
 
     });
