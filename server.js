@@ -1,7 +1,9 @@
-var express = require('express');
-var app = express();
-var index = require('./app/index/index.controller');
-var bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const index = require('./app/index/index.controller');
+const apiRouter = require('./app/controllers/api/apiRouter');
+const bodyParser = require('body-parser');
+
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -9,7 +11,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(__dirname+'/app'));
 app.use("/node_modules", express.static('node_modules'));
 
-app.set('/', index);
+
+
+app.get('/', index);
+app.use('/api', apiRouter);
+
 
 /* Init server*/
 var server;
