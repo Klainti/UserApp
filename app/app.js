@@ -9,9 +9,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
     // HOME STATES AND NESTED VIEWS ========================================
         .state('login', {
             url: '/login',
-            templateUrl : '/login/login.view.html',
-            controller  : 'LoginController',
-            controllerAs: 'vm'
+            component: 'loginComponent'
         })
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
