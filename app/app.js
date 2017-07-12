@@ -14,7 +14,8 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('signup', {
-            // we'll get to this in a bit
+            url: '/signup',
+            component: 'signupComponent'
         });
 
 });

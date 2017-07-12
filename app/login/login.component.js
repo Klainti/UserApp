@@ -6,7 +6,11 @@ angular.module('routerApp')
             console.log('ok')
 
             this.auth = function auth(){
-                console.log(this.email);
+                if (this.email == 'admin'){
+                    console.log('Welcome admin!');
+                } else{
+                    console.log('Unauthorized!')
+                }
             };
         },
 
