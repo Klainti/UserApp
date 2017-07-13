@@ -29,10 +29,33 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         });
 });
 
-routerApp.run(($state, $transitions) => {
+routerApp.run(($state, $transitions, AuthService) => {
     $transitions.onBefore({to: 'private.**'}, ()=>{
+        AuthService.checkLogin();
         return $state.go('login');
     })
 })
 
+class AuthService {
+    constructor($http){
+        this.$http = $http;
+    }
+
+    checkLogin(){
+        this.$http({
+            method: 'GET',
+            url: '/api/auth',
+        }).then(function mySuccess(response) {
+            console.log('User Auth');
+        }, function myError(response) {
+            console.log('User not Auth');
+        })
+    }
+
+    setToken(myToken){
+
+    }
+}
+
+routerApp.service('AuthService', AuthService);
 

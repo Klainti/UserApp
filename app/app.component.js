@@ -1,6 +1,6 @@
 angular.module('routerApp')
     .component('appComponent', {
-        controller: function ($http, $window){},
+        controller: function (){},
 
         templateUrl: '/app.template.html'
     });
