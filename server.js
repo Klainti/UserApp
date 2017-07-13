@@ -17,8 +17,9 @@ app.use("/node_modules", express.static('node_modules'));
 
 
 
-app.get('/', index);
 app.use('/api', apiRouter);
+app.use('*', index);
+
 
 
 /* Init server*/
