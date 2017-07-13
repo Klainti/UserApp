@@ -48,7 +48,7 @@ exports.UserRegister = (req, callback) =>{
 
 };
 
-/*
+
 exports.Authenticate = (req, res) =>{
 
     User.find({ email: req.body.email}, (err, user) =>{
@@ -60,18 +60,20 @@ exports.Authenticate = (req, res) =>{
                 if (err) throw err;
 
                 if (res_compare) {
-                    //res.send('HELLO');
 
                     return res.json({token: jwt.sign({ email: user[0].email, username: user[0].username, _id: user[0]._id}, 'centaur!')});
 
                 }else{
-                    res.status(401).json({ message: 'Authentication failed. Wrong password' });
+
+                    res.status(401).json({ message: 'Authentication failed. Wrong email/password' });
                 }
+
             });
         }else{
+
             res.status(401).json({ message: 'Authentication failed. Wrong email/password' });
+
         }
     });
 
 };
-*/

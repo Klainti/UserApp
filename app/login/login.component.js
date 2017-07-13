@@ -4,18 +4,25 @@
 
 angular.module("routerApp")
     .component('loginComponent', {
-        controller: function() {
-            this.email = '';
-            this.password = '';
-
-
-            this.auth = function() {
-                if (this.email == 'admin') {
-                    console.log(this.email);
-                }
-            };
-        },
-
+        controller: LoginController,
         templateUrl : '/login/login.view.html'
 
     });
+
+function LoginController ($http) {
+
+    this.auth = function() {
+
+        $http({
+            method : "POST",
+            url : "/api/login",
+            data: { email: this.email, password: this.password}
+        }).then(function mySuccess(response) {
+            console.log('GET LOGIN ' + response.data.token);
+        }, function myError(response) {
+            console.log(response.data.message);
+        });
+
+    };
+};
+

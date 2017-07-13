@@ -1,11 +1,10 @@
-/* Created by vchris on 12/7/2017. */
+/**
+ * Created by vchris on 13/7/2017.
+ */
 
-const express = require('express');
-const router = express.Router();
-const dbhandle = require('../../../../db/db.controller');
+dbhandle = require('../../../db/db.controller');
 
-
-router.post('/signup', (req, res) => {
+module.exports = (req, res) => {
 
     console.log('GOT POST /api/signup');
 
@@ -18,6 +17,4 @@ router.post('/signup', (req, res) => {
         }
     });
 
-});
-
-module.exports = router;
+};

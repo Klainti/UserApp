@@ -1,8 +1,12 @@
 const express = require('express');
 const app = express();
-const index = require('./app/index/index.controller');
-const apiRouter = require('./app/controllers/api/apiRouter');
 const bodyParser = require('body-parser');
+
+const apiRouter = require('./app/routes/apiRouter');
+
+const index = require('./app/controllers/index/index.con');
+
+
 
 
 app.use(bodyParser.json()); // support json encoded bodies
