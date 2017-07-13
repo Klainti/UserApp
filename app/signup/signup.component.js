@@ -1,6 +1,6 @@
 angular.module('routerApp')
     .component('signupComponent', {
-        controller: function (){
+        controller: function ($http){
             this.username = '';
             this.email = '';
             this.password = '';
@@ -11,9 +11,16 @@ angular.module('routerApp')
             console.log('ok')
 
             this.signup = function signup(){
-                console.log(this.username);
-                console.log(this.email);
-                console.log(this.firstname);
+                $http({
+                    method: 'POST',
+                    url: '/api/signup',
+                    data: {firstname: this.firstname, lastname: this.lastname, email: this.email, password: this.password,
+                    username: this.username, address: this.address},
+                }).then(function mySuccess(response) {
+                    console.log('GET REGISTER' + response.data);
+                }, function myError(response) {
+                    console.log('GET REGISTER ERROR' + response.data);
+                });
             };
         },
 
