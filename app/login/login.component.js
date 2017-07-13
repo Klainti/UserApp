@@ -9,7 +9,7 @@ angular.module("routerApp")
 
     });
 
-function LoginController ($http) {
+function LoginController ($http, $window) {
 
     this.auth = function() {
 
@@ -18,7 +18,13 @@ function LoginController ($http) {
             url : "/api/login",
             data: { email: this.email, password: this.password}
         }).then(function mySuccess(response) {
-            console.log('GET LOGIN ' + response.data.token);
+
+            $window.sessionStorage.setItem('user', response.data.token);
+
+            $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+
+            console.log($window.sessionStorage.getItem('user'));
+
         }, function myError(response) {
             console.log(response.data.message);
         });

@@ -8,13 +8,6 @@ module.exports = (req, res) => {
 
     console.log('GOT POST /api/signup');
 
-    dbhandle.UserRegister(req, (callback) => {
-        if (callback){
-            res.send('ok');
-        }else{
-            console.log('USER REGISTER ERROR');
-            res.send('error');
-        }
-    });
+    dbhandle.UserRegister(req, res);
 
 };

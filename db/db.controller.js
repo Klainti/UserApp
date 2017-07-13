@@ -8,15 +8,13 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 
 /* Register a new user, if possible */
-exports.UserRegister = (req, callback) =>{
+exports.UserRegister = (req, res) =>{
 
     User.find({email: req.body.email}, (err, user) => {
         if (err) throw err;
 
         if (user.length != 0){
-            callback(false);
-            console.log('Already exists');
-            return 'Not valid username. Already Exists!';
+            res.status(409).json({ message: 'Email already in use' });
         }
         else{
             CreateUser();
@@ -38,9 +36,7 @@ exports.UserRegister = (req, callback) =>{
                 newUser.save((err) => {
                     if (err) throw err;
 
-                    callback(true);
-
-                    console.log('User saved successfully!');
+                    res.status(201).json({ message: 'User saved successfully!' });
                 });
             });
         }
