@@ -9,9 +9,7 @@ exports.UserRegister = (req, callback) =>{
         if (err) throw err;
 
         if (user.length != 0){
-            callback(false);
-            console.log('Already exists');
-            return 'Not valid username. Already Exists!';
+            res.status(409).json({ message: 'Email already exists!' });
         }
         else{
             CreateUser();
@@ -33,8 +31,7 @@ exports.UserRegister = (req, callback) =>{
                 newUser.save((err) => {
                     if (err) throw err;
 
-                    callback(true);
-
+                    res.status(201).json({ message: 'Email already exists!' });
                     console.log('User saved successfully!');
                 });
             });

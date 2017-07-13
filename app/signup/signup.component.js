@@ -1,14 +1,6 @@
 angular.module('routerApp')
     .component('signupComponent', {
         controller: function ($http){
-            this.username = '';
-            this.email = '';
-            this.password = '';
-            this.firstname ='';
-            this.lastname = '';
-            this.address = '';
-
-            console.log('ok')
 
             this.signup = function signup(){
                 $http({
