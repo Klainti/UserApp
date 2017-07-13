@@ -5,7 +5,7 @@
 angular.module("routerApp")
     .component('loginComponent', {
         controller: LoginController,
-        templateUrl : '/login/login.view.html'
+        templateUrl : '/components/login/login.view.html'
 
     });
 

@@ -5,7 +5,7 @@
 angular.module("routerApp")
     .component('signupComponent', {
         controller: SignupController,
-        templateUrl : '/signup/signup.view.html'
+        templateUrl : '/components/signup/signup.view.html'
 
     });
 

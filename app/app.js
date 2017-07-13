@@ -6,16 +6,19 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
     $stateProvider
 
-    // HOME STATES AND NESTED VIEWS ========================================
         .state('login', {
             url: '/login',
             component: 'loginComponent'
         })
 
-        // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('signup', {
             url: '/signup',
             component: 'signupComponent'
+        })
+
+        .state('home', {
+            url: '/home',
+            component: 'homeComponent'
         });
 
 });
