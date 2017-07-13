@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <base href="/">
     <!-- CSS (load bootstrap) -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style>
@@ -14,32 +14,15 @@
     <script src="/node_modules/angular/angular.js"></script>
     <script src="https://unpkg.com/@uirouter/angularjs@1.0.5/release/angular-ui-router.js"></script>
     <script src="app.js"></script>
-    <script src="/login/login.component.js"></script>
-    <script src="/signup/signup.component.js"></script>
+    <script src="/component/login/login.component.js"></script>
+    <script src="/component/signup/signup.component.js"></script>
+    <script src="/app.component.js"></script>
 </head>
 
 <!-- apply our angular app to our site -->
 <body ng-app="routerApp">
 
-<!-- NAVIGATION -->
-<nav class="navbar navbar-inverse" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" ui-sref="#">Centaur</a>
-    </div>
-    <ul class="nav navbar-nav">
-        <li><a ui-sref="login">Log in</a></li>
-        <li><a ui-sref="signup">Sign up</a></li>
-    </ul>
-</nav>
-
-<!-- MAIN CONTENT -->
-<div class="container">
-
-    <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
-    <div ui-view></div>
-
-</div>
-
+<app-component></app-component>
 </body>
 </html>
 

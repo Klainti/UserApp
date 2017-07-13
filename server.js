@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(__dirname+'/app'));
 app.use("/node_modules", express.static('node_modules'));
 
-app.use('/', index);
+app.use('*', index);
 app.use('/api', api);
 
 /* Init server*/

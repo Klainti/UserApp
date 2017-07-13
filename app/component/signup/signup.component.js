@@ -16,5 +16,5 @@ angular.module('routerApp')
             };
         },
 
-        templateUrl: 'signup/signup.view.html'
+        templateUrl: 'component/signup/signup.view.html'
     });
