@@ -9,5 +9,7 @@ module.exports = (req, res) =>{
 
     console.log('GOT REQ = ' + req.originalUrl);
 
+    console.log(req.headers);
+
     res.sendFile(path.join(__dirname, '../../','/index.html'));
 };

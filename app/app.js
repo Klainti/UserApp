@@ -1,7 +1,8 @@
-var routerApp = angular.module('routerApp', ['ui.router']);
+var routerApp = angular.module('routerApp', ['ui.router', 'angular-jwt']);
 
 routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
+    //AuthService.resetToken();
 
     $locationProvider.html5Mode(true);  //Remove the # from the URL's
     $urlRouterProvider.otherwise('/login');
@@ -16,7 +17,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
 
         .state('private.home',{
             url: '/home',
-            template: 'This is home'
+            component: 'homeComponent'
         })
 
         .state('login', {
@@ -30,17 +31,68 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         });
 });
 
-routerApp.run(($state, $transitions, AuthService) => {
+routerApp.config(function Config($httpProvider, jwtOptionsProvider) {
+    // Please note we're annotating the function so that the $injector works when the file is minified
+    jwtOptionsProvider.config({
+        tokenGetter: ['AuthService', function (AuthService) {
+            var token = AuthService.getToken();
+            console.log('GOT ' + token);
+            return token;
+        }]
+    });
 
-    $transitions.onBefore({to: 'private.**'}, ()=>{
-        AuthService.auth();
-        return $state.go('home');
-    })
+    $httpProvider.interceptors.push('jwtInterceptor');
 });
 
-routerApp.service('AuthService', function ($http) {
+routerApp.run(($state, $transitions, $window, AuthService) => {
+
+    $transitions.onBefore({to: 'private.**'}, ()=>{
+
+        if (AuthService.getToken() == undefined){
+            console.log('GO TO LOGIN');
+            return $state.go('login');
+        }
+
+    });
+});
+
+routerApp.service('AuthService', function ($http, $window) {
+
+    this.checkToken = function () {
+        if (this.getToken() === undefined){
+            return false;
+        }else{
+            return true;
+        }
+    };
+
+    this.setToken = function (token){
+        this.token = token;
+        $window.sessionStorage.setItem('userToken', token);
+    };
+
+    this.getToken = function (){
+        if (this.token !== undefined) {
+            return this.token;
+        }
+
+        var windowToken = $window.sessionStorage.getItem('userToken');
+        if ( windowToken == null){
+            return undefined;
+        }else{
+            return windowToken;
+        }
+
+    };
+
+    this.resetToken = function (){
+        this.token = undefined;
+    };
 
     this.auth = function (){
+
+
+
         $http({
             method : "GET",
             url : "/api/auth",
@@ -59,9 +111,6 @@ routerApp.service('AuthService', function ($http) {
         });
     };
 
-    this.returnTrue = function () {
-        return true;
-    };
 });
 
 

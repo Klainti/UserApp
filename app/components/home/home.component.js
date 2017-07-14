@@ -9,7 +9,26 @@ angular.module("routerApp")
 
     });
 
-function HomeController () {
+function HomeController ($http) {
+
+    this.auth = function() {
+
+        console.log('HI');
+
+        $http({
+            method : "GET",
+            url : "/api/home",
+        }).then(function mySuccess(response) {
+
+            console.log(response.data);
+
+        }, function myError(response) {
+
+            console.log(response.data);
+
+        });
+
+    };
 
 };
 

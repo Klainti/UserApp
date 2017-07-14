@@ -9,7 +9,7 @@ angular.module("routerApp")
 
     });
 
-function LoginController ($http, $window) {
+function LoginController ($state, $http, AuthService) {
 
     this.auth = function() {
 
@@ -19,11 +19,13 @@ function LoginController ($http, $window) {
             data: { email: this.email, password: this.password}
         }).then(function mySuccess(response) {
 
-            $window.sessionStorage.setItem('user', response.data.token);
 
-            $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+            AuthService.setToken(response.data.token);
 
-            console.log($window.sessionStorage.getItem('user'));
+            //$http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+            //console.log($window.sessionStorage.getItem('userToken'));
+
+            $state.go('private.home');
 
         }, function myError(response) {
             console.log(response.data.message);

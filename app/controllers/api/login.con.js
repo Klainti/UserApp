@@ -8,6 +8,8 @@ module.exports = (req, res) => {
 
     console.log('GOT POST /api/login');
 
+    console.log(req.headers);
+
     dbhandle.Authenticate(req, res);
 
 };
