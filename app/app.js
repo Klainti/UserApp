@@ -7,6 +7,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
 
     $stateProvider
 
+        .state('public', {
+            url: '',
+            abstract: true
+        })
+
         .state('private',{
             url: '',
             abstract: true,
@@ -18,12 +23,12 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
             component: 'homeComponent'
         })
 
-        .state('login', {
+        .state('public.login', {
             url: '/login',
             component: 'loginComponent'
         })
 
-        .state('signup', {
+        .state('public.signup', {
             url: '/signup',
             component: 'signupComponent'
         });
@@ -41,11 +46,16 @@ routerApp.config(function Config($httpProvider, jwtOptionsProvider) {
 
 routerApp.run(($state, $transitions, AuthService) => {
     $transitions.onBefore({to: 'private.**'}, ()=>{
-        if (AuthService.getToken() == undefined){
-            console.log('Unauthorized!')
-            return $state.go('login');
-        }else{
-            console.log('Authorized!');
+        if (AuthService.getToken() === undefined){
+            return $state.go('public.login');
+        }
+    })
+});
+
+routerApp.run(($state, $transitions, AuthService) => {
+    $transitions.onBefore({to: 'public.**'}, ()=>{
+        if (AuthService.getToken() !== undefined){
+            return $state.go('private.home');
         }
     })
 });

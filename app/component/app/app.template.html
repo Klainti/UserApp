@@ -4,8 +4,8 @@
         <a class="navbar-brand" ui-sref="#">Centaur</a>
     </div>
     <div ng-if="$ctrl.isAuth() === false">
-        <li><a ui-sref="login">Log in</a></li>
-        <li><a ui-sref="signup">Sign up</a></li>
+        <li><a ui-sref="public.login">Log in</a></li>
+        <li><a ui-sref="public.signup">Sign up</a></li>
     </div>
     <div ng-if="$ctrl.isAuth() === true">
         <li><a ui-sref="home">Home</a></li>
