@@ -1,6 +1,6 @@
 angular.module('routerApp')
     .component('loginComponent', {
-        controller: function ($http, $window){
+        controller: function ($http, AuthService,$state){
             this.email = '';
             this.password = '';
             console.log('ok')
@@ -11,8 +11,8 @@ angular.module('routerApp')
                     url: '/api/login',
                     data: {email: this.email, password: this.password},
                 }).then(function mySuccess(response) {
-                    $window.sessionStorage.setItem('UserToken', response.data.token);
-                    $http.defaults.headers.common.Authorization = 'Bearer' + response.data.token;
+                    AuthService.setToken(response.data.token);
+                    $state.go('private.home');
                 }, function myError(response) {
                     console.log('GET Login ERROR' + response.data.message);
                 });

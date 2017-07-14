@@ -1,9 +1,9 @@
-var routerApp = angular.module('routerApp', ['ui.router']);
+var routerApp = angular.module('routerApp', ['ui.router', 'angular-jwt']);
 
 routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
     $locationProvider.html5Mode(true);  //Remove the # from the URL's
-    $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
 
@@ -15,7 +15,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
 
         .state('private.home',{
             url: '/home',
-            template: 'This is home'
+            component: 'homeComponent'
         })
 
         .state('login', {
@@ -29,33 +29,69 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         });
 });
 
+routerApp.config(function Config($httpProvider, jwtOptionsProvider) {
+    jwtOptionsProvider.config({
+        tokenGetter: ['AuthService', function (AuthService) {
+            return AuthService.getToken();
+        }]
+    });
+
+    $httpProvider.interceptors.push('jwtInterceptor');
+});
+
 routerApp.run(($state, $transitions, AuthService) => {
     $transitions.onBefore({to: 'private.**'}, ()=>{
-        AuthService.checkLogin();
-        return $state.go('login');
+        if (AuthService.getToken() == undefined){
+            console.log('Unauthorized!')
+            return $state.go('login');
+        }else{
+            console.log('Authorized!');
+        }
     })
-})
+});
 
 class AuthService {
-    constructor($http){
+    constructor($http, $window){
         this.$http = $http;
+        this.$window = $window;
+        this.myToken = undefined;
     }
 
     checkLogin(){
-        this.$http({
-            method: 'GET',
-            url: '/api/auth',
-        }).then(function mySuccess(response) {
-            console.log('User Auth');
-        }, function myError(response) {
-            console.log('User not Auth');
-        })
+        if (this.getToken() !=null){
+            return true;
+        }
+        return false;
     }
 
     setToken(myToken){
+        this.myToken = myToken;
+        this.saveSessionStorage(myToken);
+    }
 
+    getToken(){
+        if (this.myToken != undefined){
+            return this.myToken;
+        } else{
+            if (this.loadSessionStorage() != null){
+                return this.loadSessionStorage();
+            } else{
+                return undefined;
+            }
+        }
+    }
+
+    loadSessionStorage(){
+        return this.$window.sessionStorage.getItem('UserToken');
+    }
+
+    saveSessionStorage(myToken){
+        this.$window.sessionStorage.setItem('UserToken', myToken);
+    }
+
+    dropSessionStorage(){
+        this.$window.localStorage.removeItem('UserToken');
     }
 }
 
 routerApp.service('AuthService', AuthService);
-
