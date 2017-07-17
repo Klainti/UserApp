@@ -2,8 +2,6 @@ var routerApp = angular.module('routerApp', ['ui.router', 'angular-jwt']);
 
 routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
-    //AuthService.resetToken();
-
     $locationProvider.html5Mode(true);  //Remove the # from the URL's
     $urlRouterProvider.otherwise('/login');
 
@@ -39,6 +37,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         .state('private.edit',{
             url: '/edit',
             component: 'editComponent'
+        })
+
+        .state('private.logout',{
+            url: '/logout',
+            component: 'logoutComponent'
         })
 
 });
@@ -114,6 +117,7 @@ routerApp.service('AuthService', function ($http, $window) {
 
     this.resetToken = function (){
         this.token = undefined;
+        $window.sessionStorage.removeItem('userToken');
     };
 
     this.auth = function (){

@@ -6,7 +6,7 @@ module.exports = (req, res) => {
 
     console.log('GOT GET /api/auth');
 
-    console.log(req.headers);
+    //console.log(req.headers);
 
     res.end();
 

@@ -11,7 +11,10 @@ var jwt = require('jsonwebtoken');
 exports.UserRegister = (req, res) =>{
 
     User.findOne({email: req.body.email}, (err, user) => {
-        if (err) throw err;
+        if (err) {
+            throw err;
+            res.status(500).json({ message: 'Server error' });
+        }
 
         if (!user){
             CreateUser();
@@ -49,7 +52,7 @@ exports.Authenticate = (req, res) =>{
     User.findOne({ email: req.body.email}, (err, user) =>{
         if (err) {
             throw err;
-            res.status(500).json({ message: 'User not found' });
+            res.status(500).json({ message: 'Server error' });
         }
 
         if (user) {
@@ -85,17 +88,70 @@ exports.Authenticate = (req, res) =>{
 exports.UserUpdate = (req, res) =>{
 
     var userid = jwt.decode(req.headers['authorization'].split(' ')[1])._id;
+    console.log('header ' + req.headers['authorization'].split(' ')[1]);
+    console.log('userid ' + userid);
 
-    User.findByIdAndUpdate(userid, {firstname: req.body.firstname, lastname: req.body.lastname,
-                                    email: req.body.email, username: req.body.username,
-                                    address: req.body.address}, (err) => {
-        if (err) throw err;
+    User.findOne( {_id: userid}, (err, user1) =>{
+        if (err) {
+            throw err;
+            return res.status(409).json({ message: 'Server error' });
+        }
 
-        return res.json({token: jwt.sign({ firstname: req.body.firstname, lastname: req.body.lastname,
-            email: req.body.email, username: req.body.username,
-            address: req.body.address, _id:  req.body._id},  'centaur!')});
+        if (!user1){
+            return res.status(409).json({message: 'User not found'});
+        }else{
 
-        console.log('FOUND USER');
+            if (user1.email === req.body.email) {
+                user1.firstname = req.body.username;
+                user1.lastname = req.body.lastname;
+                user1.username = req.body.username;
+                user1.address = req.body.address;
+
+                user1.save((err) => {
+                    if (err) throw err;
+                });
+
+                return res.json({
+                    token: jwt.sign({
+                        firstname: req.body.firstname, lastname: req.body.lastname,
+                        email: req.body.email, username: req.body.username,
+                        address: req.body.address, _id: userid
+                    }, 'centaur!')
+                });
+            } else {
+                console.log('new email');
+                User.findOne({email: req.body.email}, (err, user2) => {
+                    if (err) {
+                        throw err;
+                        return res.status(409).json({message: 'Server error'});
+                    }
+
+                    if (user2) {
+                        console.log('User already in db');
+                        return res.status(409).json({message: 'Email already in use'});
+                    } else {
+                        user1.firstname = req.body.username;
+                        user1.lastname = req.body.lastname;
+                        user1.email = req.body.email;
+                        user1.username = req.body.username;
+                        user1.address = req.body.address;
+
+                        user1.save((err) => {
+                            if (err) throw err;
+                        });
+
+                        return res.json({
+                            token: jwt.sign({
+                                firstname: req.body.firstname, lastname: req.body.lastname,
+                                email: req.body.email, username: req.body.username,
+                                address: req.body.address, _id: userid
+                            }, 'centaur!')
+                        });
+                    }
+
+                });
+            }
+        }
     });
 
 };
@@ -107,7 +163,7 @@ exports.PassUpdate = (req, res) =>{
     User.findOne( {_id: userid}, (err, user) =>{
         if (err) {
             throw err;
-            res.status(409).json({ message: 'User not found' });
+            res.status(500).json({ message: 'Server error' });
         }
 
         bcrypt.compare(req.body.oldpass, user.password, (err, res_compare) => {

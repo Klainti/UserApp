@@ -20,10 +20,10 @@ function EditController ($http, $state, AuthService, jwtHelper) {
     this.address = token.address;
 
     this.edit = function(){
-
-        if (this.firstname === token.firstname && this.lastname === token.lastname &&
-            this.email === token.email && this.username === token.username &&
-            this.address === token.address){
+        const ctrl = this;
+        if (ctrl.firstname === token.firstname && ctrl.lastname === token.lastname &&
+            ctrl.email === token.email && ctrl.username === token.username &&
+            ctrl.address === token.address){
 
                 console.log('NO CHANGE');
                 return;
@@ -34,8 +34,8 @@ function EditController ($http, $state, AuthService, jwtHelper) {
         $http({
             method : "PUT",
             url : "/api/edit",
-            data: { firstname: this.firstname, lastname: this.lastname, email: this.email,
-                username: this.username, address: this.address }
+            data: { firstname: ctrl.firstname, lastname: ctrl.lastname, email: ctrl.email,
+                username: ctrl.username, address: ctrl.address }
         }).then(function mySuccess(response) {
             console.log('PUT EDIT ' + response.data.token);
 
@@ -44,6 +44,8 @@ function EditController ($http, $state, AuthService, jwtHelper) {
             $state.go('private.home');
         }, function myError(response) {
             console.log('GET EDIT ERROR ' + response.data);
+            ctrl.errorMsg = response.data.message;
+            ctrl.email = '';
         });
 
     };
@@ -68,7 +70,7 @@ function EditController ($http, $state, AuthService, jwtHelper) {
         }, function myError(response) {
             console.log('PUT EDIT pass ERROR ' + response.data);
 
-            ctrl.errorMessage = response.data.message;
+            ctrl.errorPassMsg = response.data.message;
             ctrl.oldpass = '';
             ctrl.newpass = '';
         });
