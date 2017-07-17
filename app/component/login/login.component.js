@@ -6,6 +6,7 @@ angular.module('routerApp')
             console.log('ok')
 
             this.auth = function auth(){
+                myctrl = this
                 $http({
                     method: 'POST',
                     url: '/api/login',
@@ -14,7 +15,7 @@ angular.module('routerApp')
                     AuthService.setToken(response.data.token);
                     $state.go('private.home');
                 }, function myError(response) {
-                    console.log('GET Login ERROR' + response.data.message);
+                    myctrl.validationError = response.data.message;
                 });
             }
         },

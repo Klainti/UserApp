@@ -8,7 +8,7 @@ class AuthService {
     }
 
     checkLogin(){
-        if (this.getToken() !=null){
+        if (this.getToken() !== undefined){
             return true;
         }
         return false;
@@ -20,10 +20,10 @@ class AuthService {
     }
 
     getToken(){
-        if (this.myToken != undefined){
+        if (this.myToken !== undefined){
             return this.myToken;
         } else{
-            if (this.loadSessionStorage() != null){
+            if (this.loadSessionStorage() !== null){
                 return this.loadSessionStorage();
             } else{
                 return undefined;
@@ -40,7 +40,8 @@ class AuthService {
     }
 
     dropSessionStorage(){
-        this.$window.localStorage.removeItem('UserToken');
+        this.myToken = undefined;
+        this.$window.sessionStorage.removeItem('UserToken');
     }
 }
 

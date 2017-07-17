@@ -1,17 +1,18 @@
 angular.module('routerApp')
     .component('signupComponent', {
-        controller: function ($http){
+        controller: function ($http, $state){
 
             this.signup = function signup(){
+                myctrl = this;
                 $http({
                     method: 'POST',
                     url: '/api/signup',
                     data: {firstname: this.firstname, lastname: this.lastname, email: this.email, password: this.password,
                     username: this.username, address: this.address},
                 }).then(function mySuccess(response) {
-                    console.log('GET REGISTER' + response.data);
+                    $state.go('public.login');
                 }, function myError(response) {
-                    console.log('GET REGISTER ERROR' + response.data);
+                    myctrl.validationError = response.data.message;
                 });
             };
         },

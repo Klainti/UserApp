@@ -19,6 +19,7 @@
         <input type="text" ng-model="$ctrl.address"><br>
         <br><br>
 
+        <p ng-if="$ctrl.validationError" style="color: red">{{$ctrl.validationError}}</p>
     </form>
     <button ng-click="$ctrl.signup()">SUBMIT</button>
 

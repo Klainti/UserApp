@@ -11,6 +11,7 @@ angular.module('routerApp')
             this.address = tokenPayload.address;
 
             this.updateProfile = function updateProfile() {
+                myctrl = this;
                 $http({
                     method: 'PUT',
                     url: '/api/edit',
@@ -19,12 +20,12 @@ angular.module('routerApp')
                     AuthService.setToken(response.data.token);
                     $state.go('private.home');
                 }, function myError(response) {
-                    console.log('GET edit error' + response.data.message);
+                    myctrl.validationErrorProfile = response.data.message;
                 });
             }
 
             this.updatePassword = function updatePassword() {
-
+                myctrl = this;
                 if (this.oldpassword !== '' && this.newpassword !== '') {
                     $http({
                         method: 'PUT',
@@ -34,9 +35,9 @@ angular.module('routerApp')
                             newpassword: this.newpassword
                         },
                     }).then(function mySuccess(response) {
-                        console.log('Password updated')
+                        $state.go('private.home');
                     }, function myError(response) {
-                        console.log('GET edit/password error' + response.data.message);
+                        myctrl.validationErrorPassword = response.data.message;
                     });
                 }
             }

@@ -31,7 +31,7 @@ exports.UserRegister = (req, res,callback) =>{
                 newUser.save((err) => {
                     if (err) throw err;
 
-                    res.status(201).json({ message: 'Email already exists!' });
+                    res.status(201).json({ message: 'User saved successfully!' });
                     console.log('User saved successfully!');
                 });
             });
@@ -66,12 +66,42 @@ exports.Authenticate = (req, res) =>{
 exports.UpdateUser = (req, res) =>{
     var id = jwt.decode(req.headers['authorization'].split(' ')[1])._id;
 
-    User.findByIdAndUpdate(id, { email: req.body.email , username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, address: req.body.address}, (err) =>{
-        if (err){
-            res.status(500).json({ message: 'Edit failed!' });
-            throw err;
+    // find user with id
+    User.find({ _id: id}, (err, user) => {
+        if (err) throw err;
+
+        if (user.length !==0){
+
+            //check if email exists!
+            User.find({ email: req.body.email}, (err, newUser) =>{
+
+                if (newUser.length !==0) {
+
+                    if (newUser[0].email === user[0].email) { // same user!
+                        user[0].username = req.body.username;
+                        user[0].firstname = req.body.firstname;
+                        user[0].lastname = req.body.lastname;
+                        user[0].address = req.body.address;
+                    } else {
+                        return res.status(409).json({ message: 'Email already exists!' });
+                    }
+                } else{
+                    user[0].email = req.body.email;
+                    user[0].username = req.body.username;
+                    user[0].firstname = req.body.firstname;
+                    user[0].lastname = req.body.lastname;
+                    user[0].address = req.body.address;
+                }
+
+                user[0].save((err) =>{
+                    if (err) throw err;
+                })
+
+                return res.json({token: jwt.sign({ email: req.body.email, username: req.body.username,firstname: req.body.firstname,lastname: req.body.lastname,address: req.body.address, _id: id}, 'centaur!')});
+
+            });
         }else{
-            return res.json({token: jwt.sign({ email: req.body.email, username: req.body.username,firstname: req.body.firstname,lastname: req.body.lastname,address: req.body.address, _id: id}, 'centaur!')});
+            res.status(400).json({ message: 'Invalid id!' });
         }
     });
 }

@@ -6,6 +6,7 @@
         <input type="password" ng-model="$ctrl.password">
         <br><br>
 
+        <p ng-if="$ctrl.validationError" style="color: red">{{$ctrl.validationError}}</p>
     </form>
     <button ng-click="$ctrl.auth()">SUBMIT</button>
 

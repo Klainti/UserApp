@@ -28,6 +28,10 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
             component: 'editComponent'
         })
 
+        .state('private.logout',{
+            component: 'logoutComponent'
+        })
+
         .state('public.login', {
             url: '/login',
             component: 'loginComponent'
