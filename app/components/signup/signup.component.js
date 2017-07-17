@@ -12,17 +12,20 @@ angular.module("routerApp")
 function SignupController ($http, $state) {
 
     this.auth = function() {
-
+        const ctrl = this;
         $http({
             method : "POST",
             url : "/api/signup",
-            data: { firstname: this.firstname, lastname: this.lastname, email: this.email,
-                username: this.username, password: this.password, address: this.address }
+            data: { firstname: ctrl.firstname, lastname: ctrl.lastname, email: ctrl.email,
+                username: ctrl.username, password: ctrl.password, address: ctrl.address }
         }).then(function mySuccess(response) {
             console.log('GET REGISTER ' + response.data);
-            $state.go('login');
+            $state.go('public.login');
         }, function myError(response) {
             console.log('GET REGISTER ERROR ' + response.data);
+
+            ctrl.errorMessage = response.data.message;
+            ctrl.email = '';
         });
 
     };

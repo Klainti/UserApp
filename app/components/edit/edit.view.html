@@ -1,3 +1,5 @@
+<p>Welcome to edit</p>
+
 <div>
     <form novalidate>
         Firtname:<br>
@@ -8,14 +10,25 @@
         <input type="text" ng-model="$ctrl.email"><br>
         Username:<br>
         <input type="text" ng-model="$ctrl.username"><br>
-        Password:<br>
-        <input type="password" ng-model="$ctrl.password"><br>
         Address:<br>
         <input type="text" ng-model="$ctrl.address"><br>
+        <br><br>
+
+    </form>
+    <button ng-click="$ctrl.edit()">SUBMIT</button>
+
+</div>
+
+<div>
+    <form novalidate>
+        Old Password:<br>
+        <input type="password" ng-model="$ctrl.oldpass"><br>
+        New Password:<br>
+        <input type="password" ng-model="$ctrl.newpass"><br>
         <div ng-if="$ctrl.errorMessage" style="color:red">{{ $ctrl.errorMessage }}</div>
         <br><br>
 
     </form>
-    <button ng-click="$ctrl.auth()">SUBMIT</button>
+    <button ng-click="$ctrl.editPass()">SUBMIT</button>
 
 </div>

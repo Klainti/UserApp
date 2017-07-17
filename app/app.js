@@ -9,6 +9,22 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
 
     $stateProvider
 
+        .state('public',{
+            url: '',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+
+        .state('public.login', {
+            url: '/login',
+            component: 'loginComponent'
+        })
+
+        .state('public.signup', {
+            url: '/signup',
+            component: 'signupComponent'
+        })
+
         .state('private',{
             url: '',
             abstract: true,
@@ -20,15 +36,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
             component: 'homeComponent'
         })
 
-        .state('login', {
-            url: '/login',
-            component: 'loginComponent'
+        .state('private.edit',{
+            url: '/edit',
+            component: 'editComponent'
         })
 
-        .state('signup', {
-            url: '/signup',
-            component: 'signupComponent'
-        });
 });
 
 routerApp.config(function Config($httpProvider, jwtOptionsProvider) {
@@ -44,17 +56,32 @@ routerApp.config(function Config($httpProvider, jwtOptionsProvider) {
     $httpProvider.interceptors.push('jwtInterceptor');
 });
 
+
+routerApp.run(($state, $transitions, $window, AuthService) => {
+
+    $transitions.onBefore({to: 'public.**'}, ()=>{
+
+        if (AuthService.getToken() !== undefined){
+            console.log('GO TO HOME');
+            return $state.go('private.home');
+        }
+
+    });
+});
+
+
 routerApp.run(($state, $transitions, $window, AuthService) => {
 
     $transitions.onBefore({to: 'private.**'}, ()=>{
 
-        if (AuthService.getToken() == undefined){
+        if (AuthService.getToken() === undefined){
             console.log('GO TO LOGIN');
             return $state.go('login');
         }
 
     });
 });
+
 
 routerApp.service('AuthService', function ($http, $window) {
 

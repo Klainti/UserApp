@@ -6,12 +6,12 @@
     </div>
     <ul class="nav navbar-nav">
         <div ng-if="$ctrl.isAuth() === false">
-            <li><a ui-sref="login">Log in</a></li>
-            <li><a ui-sref="signup">Sign up</a></li>
+            <li><a ui-sref="public.login">Log in</a></li>
+            <li><a ui-sref="public.signup">Sign up</a></li>
         </div>
         <div ng-if="$ctrl.isAuth() === true">
-            <li><a ui-sref="home">Home</a></li>
-            <li><a ui-sref="edit">Edit</a></li>
+            <li><a ui-sref="private.home">Home</a></li>
+            <li><a ui-sref="private.edit">Edit</a></li>
         </div>
     </ul>
 </nav>
