@@ -1,0 +1,25 @@
+<div>
+    <form novalidate>
+        Email:<br>
+        <input type="text" ng-model="$ctrl.email"><br>
+        Username:<br>
+        <input type="text" ng-model="$ctrl.username"><br>
+        Firstname:<br>
+        <input type="text" ng-model="$ctrl.firstname"><br>
+        Lastname:<br>
+        <input type="text" ng-model="$ctrl.lastname"><br>
+        Address:<br>
+        <input type="text" ng-model="$ctrl.address"><br>
+    </form>
+    <button ng-click="$ctrl.updateProfile()">Change Profile</button>
+</div>
+
+<div>
+    <form novalidate>
+        OldPassword:<br>
+        <input type="password" ng-model="$ctrl.oldpassword"><br>
+        NewPassword:<br>
+        <input type="password" ng-model="$ctrl.newpassword"><br>
+    </form>
+    <button ng-click="$ctrl.updatePassword()">Change Password</button>
+</div>

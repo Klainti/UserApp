@@ -23,6 +23,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
             component: 'homeComponent'
         })
 
+        .state('private.edit',{
+            url: '/edit',
+            component: 'editComponent'
+        })
+
         .state('public.login', {
             url: '/login',
             component: 'loginComponent'
